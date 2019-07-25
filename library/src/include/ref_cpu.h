@@ -136,7 +136,7 @@ private:
 
 public:
     fftwbuf()
-        : data(0)
+        : data(NULL)
         , size(0)
         , typesize(0)
     {
@@ -166,11 +166,14 @@ public:
     {
         size     = size0;
         typesize = typesize0;
-        if(data != 0)
+        if(data != NULL)
         {
             freedata();
         }
         data = (void*)(*local_fftwf_malloc)(typesize * size);
+        std::cout << typesize << std::endl;
+        std::cout << size << std::endl;
+        assert(data != NULL);
     }
     size_t bufsize()
     {
@@ -221,7 +224,8 @@ class RefLibOp
         case CS_KERNEL_FFT_MUL:
         case CS_KERNEL_PAD_MUL:
         case CS_KERNEL_RES_MUL:
-            insize = std::accumulate(data->node->length.begin(),
+            // NB: the Bluestein length is the first dimesion
+            insize = std::accumulate(data->node->length.begin() + 1,
                                      data->node->length.end(),
                                      batch,
                                      std::multiplies<size_t>());
@@ -253,7 +257,7 @@ class RefLibOp
         fftwin.alloc(insize, in_typesize);
         fftwout.alloc(outsize, out_typesize);
         libout.alloc(outsize, out_typesize);
-
+        
         memset(fftwin.data, 0x40, fftwin.bufsize());
         memset(fftwout.data, 0x40, fftwout.bufsize());
         memset(libout.data, 0x40, libout.bufsize());

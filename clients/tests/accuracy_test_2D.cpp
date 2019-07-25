@@ -76,19 +76,23 @@ protected:
                                          following size , {78125, 390625},     \
                                          {1953125, 9765625} */
 
+#define PRIME_RANGE  {7, 25}, {11, 625}, {13, 15625}, {1, 11}, {11, 1}, {8191, 243}, {7,11}, \
+        {7,32}, {1009, 1009}, 
+
 static std::vector<std::vector<size_t>> pow2_range = {POW2_RANGE};
 static std::vector<std::vector<size_t>> pow3_range = {POW3_RANGE};
 static std::vector<std::vector<size_t>> pow5_range = {POW5_RANGE};
+static std::vector<std::vector<size_t>> prime_range = {PRIME_RANGE};
 
 static size_t batch_range[] = {1};
 
 static size_t stride_range[] = {1}; // 1: assume packed data
 
 static rocfft_result_placement placeness_range[] = {
-    /*rocfft_placement_notinplace,*/ rocfft_placement_inplace};
+    rocfft_placement_notinplace, rocfft_placement_inplace};
 
 static rocfft_transform_type transform_range[] = {
-    /*rocfft_transform_type_complex_forward, */ rocfft_transform_type_complex_inverse};
+    rocfft_transform_type_complex_forward, rocfft_transform_type_complex_inverse};
 
 static data_pattern pattern_range[] = {sawtooth};
 
@@ -435,6 +439,16 @@ INSTANTIATE_TEST_CASE_P(rocfft_pow5_2D,
                                 ValuesIn(transform_range),
                                 ValuesIn(stride_range),
                                 ValuesIn(pattern_range)));
+
+INSTANTIATE_TEST_CASE_P(rocfft_prime_2D,
+                        accuracy_test_complex_2D,
+                        Combine(ValuesIn(prime_range),
+                                ValuesIn(batch_range),
+                                ValuesIn(placeness_range),
+                                ValuesIn(transform_range),
+                                ValuesIn(stride_range),
+                                ValuesIn(pattern_range)));
+
 
 // *****************************************************
 // REAL  HERMITIAN
