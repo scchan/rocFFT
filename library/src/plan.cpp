@@ -1656,6 +1656,8 @@ void TreeNode::TraverseTreeAssignBuffersLogicA(OperatingBuffer& flipIn,
     break;
     case CS_BLUESTEIN:
     {
+        assert(childNodes.size() == 7);
+
         OperatingBuffer savFlipIn  = flipIn;
         OperatingBuffer savFlipOut = flipOut;
         OperatingBuffer savOutBuf  = obOutBuf;
@@ -1664,19 +1666,21 @@ void TreeNode::TraverseTreeAssignBuffersLogicA(OperatingBuffer& flipIn,
         flipOut  = OB_TEMP;
         obOutBuf = OB_TEMP_BLUESTEIN;
 
-        obIn  = (parent == nullptr) ? OB_USER_IN : savFlipIn;
-        obOut = (parent == nullptr)
-                    ? (placement == rocfft_placement_inplace) ? OB_USER_IN : OB_USER_OUT
-                    : savOutBuf;
-
-        assert(childNodes.size() == 7);
-
         assert(childNodes[0]->scheme == CS_KERNEL_CHIRP);
         childNodes[0]->obIn  = OB_TEMP_BLUESTEIN;
         childNodes[0]->obOut = OB_TEMP_BLUESTEIN;
 
         assert(childNodes[1]->scheme == CS_KERNEL_PAD_MUL);
-        childNodes[1]->obIn  = obIn;
+        if(parent == nullptr)
+        {
+            childNodes[1]->obIn
+                = (placement == rocfft_placement_inplace) ? OB_USER_OUT : OB_USER_IN;
+        }
+        else
+        {
+            childNodes[1]->obIn = obIn;
+        }
+
         childNodes[1]->obOut = OB_TEMP_BLUESTEIN;
 
         childNodes[2]->obIn  = OB_TEMP_BLUESTEIN;
@@ -1697,7 +1701,10 @@ void TreeNode::TraverseTreeAssignBuffersLogicA(OperatingBuffer& flipIn,
 
         assert(childNodes[6]->scheme == CS_KERNEL_RES_MUL);
         childNodes[6]->obIn  = OB_TEMP_BLUESTEIN;
-        childNodes[6]->obOut = obOut;
+        childNodes[6]->obOut = (parent == nullptr) ? OB_USER_OUT : obOut;
+
+        obIn  = childNodes[1]->obIn;
+        obOut = childNodes[6]->obOut;
 
         flipIn   = savFlipIn;
         flipOut  = savFlipOut;
