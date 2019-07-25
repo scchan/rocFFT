@@ -255,7 +255,7 @@ class RefLibOp
         fftwin.alloc(insize, in_typesize);
         fftwout.alloc(outsize, out_typesize);
         libout.alloc(outsize, out_typesize);
-        
+
         memset(fftwin.data, 0x40, fftwin.bufsize());
         memset(fftwout.data, 0x40, fftwout.bufsize());
         memset(libout.data, 0x40, libout.bufsize());

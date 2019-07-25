@@ -449,10 +449,6 @@ INSTANTIATE_TEST_CASE_P(rocfft_prime_1D,
                         accuracy_test_real,
                         Combine(ValuesIn(prime_range), ValuesIn(batch_range)));
 
-
-
-
-
 // *****************************************************
 // *****************************************************
 // TESTS disabled by default since they take a long time to execute
