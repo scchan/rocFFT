@@ -1591,7 +1591,15 @@ void TreeNode::TraverseTreeAssignBuffersLogicA(OperatingBuffer& flipIn,
         size_t cs = childNodes[1]->childNodes.size();
         if(cs)
         {
-            assert(childNodes[1]->childNodes[0]->obIn == OB_TEMP_CMPLX_FOR_REAL);
+            if(childNodes[1]->scheme == CS_BLUESTEIN)
+            {
+                assert(childNodes[1]->childNodes[0]->obIn == OB_TEMP_BLUESTEIN);
+                assert(childNodes[1]->childNodes[1]->obIn == OB_TEMP_CMPLX_FOR_REAL);
+            }
+            else
+            {
+                assert(childNodes[1]->childNodes[0]->obIn == OB_TEMP_CMPLX_FOR_REAL);
+            }
             assert(childNodes[1]->childNodes[cs - 1]->obOut == OB_TEMP_CMPLX_FOR_REAL);
         }
 
