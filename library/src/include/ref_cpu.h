@@ -171,8 +171,6 @@ public:
             freedata();
         }
         data = (void*)(*local_fftwf_malloc)(typesize * size);
-        std::cout << typesize << std::endl;
-        std::cout << size << std::endl;
         assert(data != NULL);
     }
     size_t bufsize()
