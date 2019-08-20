@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+set -x
+
 # #############################################################################
 # Copyright (c) 2016 - present Advanced Micro Devices, Inc. All rights reserved.
 #
@@ -387,7 +390,7 @@ if [[ "${build_cuda}" == false ]]; then
         CXX=${compiler} ${cmake_executable} ${cmake_common_options} -DCPACK_SET_DESTDIR=OFF -DCMAKE_INSTALL_PREFIX=${install_prefix} -DCPACK_PACKAGING_INSTALL_PREFIX=/opt/rocm ../..
     fi
     check_exit_code
-    make -j$(nproc)
+    make VERBOSE=1
     check_exit_code
     if ( check_install_dir ${install_prefix} ) ; then
         make install

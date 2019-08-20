@@ -27,6 +27,7 @@
 #include <iostream>
 #include <vector>
 
+#if 0
 TEST(rocfft_UnitTest, sample_code_iterative)
 {
     for(size_t j = 0; j < 10; j++)
@@ -136,3 +137,4 @@ TEST(rocfft_UnitTest, plan_description)
     EXPECT_TRUE(rocfft_status_success == rocfft_plan_description_destroy(desc));
     EXPECT_TRUE(rocfft_status_success == rocfft_plan_destroy(plan));
 }
+#endif

@@ -407,6 +407,8 @@ TEST_P(accuracy_test_real_2D, normal_2D_hermitian_interleaved_to_real_interleave
     }
 }
 
+
+#if 0
 // Values is for a single item; ValuesIn is for an array
 // ValuesIn take each element (a vector) and combine them and feed them to
 // test_p
@@ -469,3 +471,5 @@ INSTANTIATE_TEST_CASE_P(rocfft_pow5_2D,
                         Combine(ValuesIn(pow5_range),
                                 ValuesIn(batch_range),
                                 ValuesIn(pattern_range)));
+
+#endif

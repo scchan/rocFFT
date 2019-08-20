@@ -63,9 +63,18 @@ protected:
         524288, 1048576, 2097152, 4194304, 8388608, 16777216, 33554432
 #define POW3_RANGE 3, 9, 27, 81, 243, 729, 2187, 6561, 19683, 59049, 177147, 531441, 1594323
 #define POW5_RANGE 5, 25, 125, 625, 3125, 15625, 78125, 390625, 1953125, 9765625, 48828125
+
+
+#if 0
 #define MIX_RANGE                                                                                \
     6, 10, 12, 15, 20, 30, 120, 150, 225, 240, 300, 486, 600, 900, 1250, 1500, 1875, 2160, 2187, \
         2250, 2500, 3000, 4000, 12000, 24000, 72000
+#else
+#define MIX_RANGE                                                                                \
+    120
+#endif
+
+
 #define PRIME_RANGE \
     7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97
 
@@ -184,6 +193,7 @@ TEST_P(accuracy_test_complex, normal_1D_complex_interleaved_to_complex_interleav
     rocfft_transform_type   transform_type = std::get<3>(GetParam());
     size_t                  stride         = std::get<4>(GetParam());
 
+#if 0
     try
     {
         normal_1D_complex_interleaved_to_complex_interleaved<float, fftwf_complex>(
@@ -193,6 +203,7 @@ TEST_P(accuracy_test_complex, normal_1D_complex_interleaved_to_complex_interleav
     {
         handle_exception(err);
     }
+#endif
 }
 
 TEST_P(accuracy_test_complex, normal_1D_complex_interleaved_to_complex_interleaved_double_precision)
@@ -378,6 +389,10 @@ TEST_P(accuracy_test_real, normal_1D_hermitian_interleaved_to_real_interleaved_d
 // *****************************************************
 // COMPLEX TO COMPLEX
 // *****************************************************
+
+
+#if 0
+
 INSTANTIATE_TEST_CASE_P(rocfft_pow2_1D,
                         accuracy_test_complex,
                         Combine(ValuesIn(pow2_range),
@@ -402,6 +417,9 @@ INSTANTIATE_TEST_CASE_P(rocfft_pow5_1D,
                                 ValuesIn(transform_range),
                                 ValuesIn(stride_range)));
 
+#endif
+
+
 INSTANTIATE_TEST_CASE_P(rocfft_pow_mix_1D,
                         accuracy_test_complex,
                         Combine(ValuesIn(mix_range),
@@ -410,6 +428,7 @@ INSTANTIATE_TEST_CASE_P(rocfft_pow_mix_1D,
                                 ValuesIn(transform_range),
                                 ValuesIn(stride_range)));
 
+#if 0
 INSTANTIATE_TEST_CASE_P(rocfft_pow_random_1D,
                         accuracy_test_complex,
                         Combine(ValuesIn(generate_random(20)),
@@ -448,6 +467,9 @@ INSTANTIATE_TEST_CASE_P(rocfft_pow_mix_1D,
 INSTANTIATE_TEST_CASE_P(rocfft_prime_1D,
                         accuracy_test_real,
                         Combine(ValuesIn(prime_range), ValuesIn(batch_range)));
+
+
+#endif 
 
 // *****************************************************
 // *****************************************************
